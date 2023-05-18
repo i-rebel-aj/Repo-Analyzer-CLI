@@ -1,5 +1,9 @@
 #!/bin/bash
-
+echo "Cleaning Up....."
+if test -f "./output.json"; then
+  rm "./output.json"
+  echo "Output file removed."
+fi
 echo "Checking Dependencies........"
 if ! dpkg -l | grep -q "git"; then
   echo "Git is Missing, Installing Git...."
@@ -14,4 +18,12 @@ if ! dpkg -l | grep -q "nodejs"; then
 
 fi
 touch config.json
-node ./index.js
+echo "Everything seems cool........"
+
+output=$(node ./index.js getPathString)
+
+source ./repo-stat.sh $output
+
+node ./index.js parseOutFileData
+#clean up
+rm output.json
